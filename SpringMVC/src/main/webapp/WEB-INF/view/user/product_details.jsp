@@ -480,7 +480,7 @@ cursor: pointer;
 				var xhr = new XMLHttpRequest();
 		      	xhr.open("GET", "/SpringMVC/cart/checkout/save/"+myarr[0]);
 		      	xhr.onload = function () { 
-		      		window.location.assign("/SpringMVC/cart/checkout/"+myarr[0]+"?color="+myarr[1]+"&size="+myarr[2] +"&quantity="+amount);
+		      		window.location.assign("/SpringMVC/cart/checkout/"+myarr[0]+"?color="+myarr[1]+"&size="+myarr[2]);
 		      	};
 		      	xhr.send();
 			}

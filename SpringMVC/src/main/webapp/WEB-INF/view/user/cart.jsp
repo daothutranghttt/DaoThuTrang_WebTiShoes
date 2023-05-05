@@ -392,7 +392,7 @@
 					"/SpringMVC/cart?size="+size);
 			// What to do when server responds
 			xhr.onload = function() {
-				
+				location.reload();
 			};
 			xhr.send();
 		}
@@ -403,6 +403,7 @@
 					"/SpringMVC/cart?color="+color);
 			// What to do when server responds
 			xhr.onload = function() {
+				location.reload();
 			};
 			xhr.send();
 	 	   	let selectElement = document.querySelectorAll('[name=size]');

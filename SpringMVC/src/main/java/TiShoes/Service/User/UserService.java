@@ -79,6 +79,16 @@ public class UserService implements UserRepository{
 		return avt;
 	}
 	
+	public String get_phone_by_user_id(int user_id) {
+		String phone = "";
+		for (User u : getAllUser()) {
+			if(u.getId() == user_id) {
+				phone = u.getPhone_number();
+			}
+		}
+		return phone;
+	}
+	
 	public static void main(String[] args) {
 		//UserService u = new UserService();
 		

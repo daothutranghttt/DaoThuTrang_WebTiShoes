@@ -299,7 +299,8 @@
 						<c:if test="${ order.discount_at > 0 }">
 							<div class="total-prod">
 								<p>Voucher:</p>
-								<p class="money">-$${ order.discount_at }</p>
+								<p class="money">-$<fmt:formatNumber type="number" maxFractionDigits="2"
+									value="${ order.discount_at }" /></p>
 							</div>
 						</c:if>
 

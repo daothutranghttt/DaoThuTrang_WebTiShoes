@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,16 +25,19 @@ import com.paypal.base.rest.PayPalRESTException;
 
 import TiShoes.Model.Cart;
 import TiShoes.Model.Color_size;
+import TiShoes.Model.User;
 import TiShoes.Service.User.CartService;
 import TiShoes.Service.User.Color_sizeService;
 import TiShoes.Service.User.PaymentService;
 import TiShoes.Service.User.UserService;
+import TiShoes.Service.User.VoucherService;
 
 @Controller
 public class PaymentController {
 	private UserService userService;
 	private CartService cartService;
 	private Color_sizeService color_sizeService;
+	private VoucherService vcservice;
 	
 	@RequestMapping(value = { "/payment" })
 	public ModelAndView loadpayment(HttpServletRequest request, HttpServletResponse response) {
@@ -51,7 +55,7 @@ public class PaymentController {
 		cartService = new CartService();
 		userService = new UserService();
 		color_sizeService = new Color_sizeService();
-		
+		vcservice = new VoucherService();
 		try {
 			PaymentService paymentServices = new PaymentService();
 			Payment payment = paymentServices.getPaymentDetails(paymentId);
@@ -64,12 +68,10 @@ public class PaymentController {
 			request.setAttribute("transaction", transaction);
 			request.setAttribute("shippingAddress", shippingAddress);
 			
-			request.setAttribute("phone", payerInfo.getPhone().replace("+84 ", "0"));
 			
 			String cartid = "";
 			HashMap<Cart, Integer> liCS = new LinkedHashMap<>();
 			for (Item it : transaction.getItemList().getItems()) {
-				
 					if(it.getDescription() != null) {
 						if(it.getDescription().contains("cs")) {
 							System.out.println(it.getDescription());
@@ -87,6 +89,8 @@ public class PaymentController {
 						System.out.println("voucher: " + it.getPrice());
 						mv.addObject("vccode", it.getName().replace("Voucher:", "").trim());
 						System.out.println("vc code:" + it.getName().replace("Voucher:", "").trim());
+						int vchid = vcservice.getVoucherIdByCode(it.getName().replace("Voucher:", "").trim());
+						mv.addObject("vchid", vchid);
 					}
 			}
 			if(liCS.size() > 0) {
@@ -110,22 +114,32 @@ public class PaymentController {
 	public void load_payment_paypal(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, PayPalRESTException {
 		color_sizeService = new Color_sizeService();
+		userService = new UserService();
+		vcservice = new VoucherService();
 		String product = request.getParameter("product"); // product = {id_prod_quantity}/{id_prod_quantity}/{id_prod_quantity}...
 		String voucher = request.getParameter("vchprice");
 		String total = request.getParameter("total");
 		String user_id = request.getParameter("userid");
 		String vccode = request.getParameter("vccode");
 		String cartid = request.getParameter("cartid");
-		
+		String vchid = request.getParameter("vchid");
 		String color = request.getParameter("color");
 		String size = request.getParameter("size");
-		
+		if(vchid != null) {
+			if(!vchid.equals("")) {
+				vccode = vcservice.get_voucher_code_by_id(Integer.parseInt(vchid));
+				System.out.println(vchid +"vchid=========================================");
+			}
+		}
 		if(voucher == null) {
 			voucher="0";
 		}
 		if(user_id == null) {
 			user_id = "1";
 		}
+		String phone = userService.get_phone_by_user_id(Integer.parseInt(user_id));
+		HttpSession session = request.getSession();
+		session.setAttribute("phonenumber", phone);
 		System.out.println(total +"=========================================");
 		PaymentService paymentServices = new PaymentService();
 		if(cartid != null && !cartid.equals("")) {

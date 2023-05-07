@@ -21,8 +21,8 @@ import TiShoes.Model.Product;
 import TiShoes.Model.User;
 
 public class PaymentService {
-	private static final String CLIENT_ID = "Ab9hEluU0ckPAwAbNLhpJAzb3rvKFtHxQOnoF2wRk-IwScOcTK4g7aIVx6xIx6kM2STn2N_1dyBQR8mM";
-	private static final String CLIENT_SECRET = "EG72j2PAsKci7RrsNgGTKhkbspj4Zl1pGNwaXMIo1ighuZUrxkFY6j3zCB71_lm8V8OKqk1IbgxTGr2q";
+	private static final String CLIENT_ID = "ATU4uETe5SbZYe_kHWrl_EpQAYOOTYowgOVfbLlc9MkO34T3PfbxneoIyHgsnwAFGroaZXdyHEMwNwKX";
+	private static final String CLIENT_SECRET = "EE_yEDOmEJ0SlawgHA-P3iaDIx_CFJHZbrFhSEWA0CA7DawCt981Irv1pruLqft3G6UbxdMtJRdFV1oI";
 	private static final String MODE = "sandbox";
 	
 	private ProductService productService;
@@ -113,7 +113,9 @@ public class PaymentService {
 		    item.setCurrency("USD");
 		    item.setName(p.getTitle());
 		    if(p.getDiscount() > 0) {
-		    	item.setPrice(String.format("%.2f", p.getPrice() - p.getPrice()*p.getDiscount()/100));
+		    	double total_ = (double) Math.round((p.getPrice() - p.getPrice()*p.getDiscount()/100) * 100)/100;
+		    	System.out.println(p.getPrice() - p.getPrice()*p.getDiscount()/100  +"=============================22");
+		    	item.setPrice(String.format("%.2f", total_));
 		    } else {
 		    	item.setPrice(String.format("%.2f", p.getPrice()));
 		    }
@@ -145,6 +147,7 @@ public class PaymentService {
 	    	// voucher
 	    	Item it_vc = new Item();
 	    	it_vc.setCurrency("USD");
+	    	System.out.println("vc code131: "+vccode);
 	    	it_vc.setName("Voucher:" + vccode);
 	    	it_vc.setPrice(String.format("%.2f", (float) -voucher));
 	    	it_vc.setQuantity("1");

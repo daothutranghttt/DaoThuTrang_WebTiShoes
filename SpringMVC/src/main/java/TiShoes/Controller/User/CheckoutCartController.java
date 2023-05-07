@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import TiShoes.Model.Cart;
 import TiShoes.Model.Color_size;
+import TiShoes.Model.User;
 import TiShoes.Service.Admin.aStatisticsService;
 import TiShoes.Service.User.CartService;
 import TiShoes.Service.User.CheckoutService;
@@ -48,6 +50,8 @@ public class CheckoutCartController {
 		statisticsService = new StatisticsService();
 		voucher_saveService = new Voucher_saveService();
 
+		HttpSession session = request.getSession();
+
 		String fullname = request.getParameter("fullname");
 		String phone_number = request.getParameter("phone");
 		String email = request.getParameter("email");
@@ -66,6 +70,7 @@ public class CheckoutCartController {
 		if (vchid != null) {
 			if (!vchid.equals("")) {
 				vc_id = Integer.parseInt(vchid);
+				System.out.println("vchid (69): " + vchid);
 			}
 		}
 		if (note == null) {
@@ -74,9 +79,9 @@ public class CheckoutCartController {
 		if (method == null) {
 			method = "COD";
 		}
-
 		double total = 0;
 		List<Cart> liCart = cartService.get_all_cart_by_string(id);
+		User u = null;
 		if (liCart.size() > 0) {
 			for (Cart cart : liCart) {
 				// calculator total product price
@@ -87,12 +92,17 @@ public class CheckoutCartController {
 				} else {
 					total += cart.getColor_size().getProd().getPrice() * cart.getQuantity();
 				}
+				u = cart.getUser();
 			}
 		}
 		int vch_discount = voucherService.getDiscountById_Voucher(vc_id);
 		double dis = 0;
 		if (vch_discount > 0) {
 			dis = (double) Math.round(vch_discount * total) / 100;
+		}
+
+		if (method != null) {
+			phone_number = u.getPhone_number();
 		}
 
 		if (city != null && town != null && village != null && fullname != null && phone_number != null
@@ -127,11 +137,22 @@ public class CheckoutCartController {
 									cart.getQuantity())
 							&& cartService.delete_cart_by_cart_id(cart.getId())
 							&& voucher_saveService.update(cart.getUser().getId(), vc_id)) {
+						if (!method.equals("COD")) {
+							statisticsService.update_revenue_product_num_in_statistics_DB(1,
+									price_at * cart.getQuantity());
+						}
 					}
 				}
 				int order_id = orderService.get_last_order_id_by(phone_number, email);
 				System.out.println("buy cart success this checkout cart controller");
 				System.out.println(vc_id + "_" + method);
+
+				if (!method.equals("COD")) {
+					if(dis != 0.0) {
+						statisticsService.update_revenue_product_num_in_statistics_DB(0, -dis);
+					}
+				}
+				
 				return new ModelAndView("redirect: /SpringMVC/thank/" + order_id);
 			} else {
 				System.out.println("buy cart unsuccess this");

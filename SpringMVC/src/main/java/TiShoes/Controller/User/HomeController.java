@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,7 @@ public class HomeController {
 					msg = "true";
 					mv.addObject("message", msg);
 					mv.addObject("userID", get_user_id);
+					
 					if(rememberme != null) {
 						Cookie oUserId = new Cookie("userID", get_user_id);
 						oUserId.setMaxAge(60*60*24*15);

@@ -52,4 +52,9 @@ public class StatisticsService {
 		}
 		return false;
 	}
+	
+	public static void main(String[] args) {
+		StatisticsService s = new StatisticsService();
+		s.update_revenue_product_num_in_statistics_DB(0, -2.0);
+	}
 }

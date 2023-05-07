@@ -54,6 +54,18 @@
 	width: 80%;
 	height: 80%;
 }
+.admin-qrcode-icon img {
+	width: 100%;
+}
+
+.admin-qrcode-icon {
+	cursor: pointer;
+	position: absolute;
+	right: 290px;
+	width: 50px;
+	height: 50px;
+	top: 8px;
+}
 </style>
 
 <body>
@@ -178,11 +190,6 @@
 											src="<c:url value="/assets/images/icons/icons8-eye-64.png"/>"
 											alt="">
 									</button>
-									<button class="btn-canceled-order" id="${liOrder.id }">
-										<img
-											src="<c:url value="/assets/images/icons/icons8-close-64.png"/>"
-											alt="">
-									</button></td>
 							</tr>
 						</c:forEach>
 					</tbody>

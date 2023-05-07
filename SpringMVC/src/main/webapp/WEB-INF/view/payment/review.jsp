@@ -70,9 +70,9 @@
 							<th>Delivery address</th>
 						</tr>
 						<tr>
-							<td>${payer.lastName} ${payer.firstName} - ${phone}
+							<td>${payer.lastName} ${payer.firstName} - ${ sessionScope.phonenumber }
 								<input type="hidden" name="fullname" value="${payer.lastName} ${payer.firstName}">
-								<input type="hidden" name="phone" value="${ phone }">
+								<input type="hidden" name="phone" value="${ sessionScope.phonenumber }">
 							</td>
 							
 							<c:if
@@ -117,6 +117,7 @@
 					</table>
 				</div>
 				<input type="hidden" name="vccode" value="${ vccode }">
+				<input type="hidden" name=vchid value="${ vchid }">
 				<input type="hidden" name="method" value="Credit card">
 				<div class="continue-shopping">
 					<input type="submit" name="paynow" id="paynow" value="Pay now">

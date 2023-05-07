@@ -21,7 +21,7 @@
 	<link rel="stylesheet"
 	href="<c:url value='/assets/css/message.css'/>">
 <c:if test="${ management == 'true' }">
-	<title>Order management :)</title>
+	<title>Delivery :)</title>
 </c:if>
 
 <c:if test="${ orderdetails == 'true' }">
@@ -105,6 +105,18 @@ p#total {
 
 div#status-select {
 	width: 37.2%;
+}
+.admin-qrcode-icon img {
+	width: 100%;
+}
+
+.admin-qrcode-icon {
+	cursor: pointer;
+	position: absolute;
+	right: 290px;
+	width: 50px;
+	height: 50px;
+	top: 8px;
 }
 </style>
 

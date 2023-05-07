@@ -13,6 +13,7 @@ import TiShoes.Model.Order_;
 import TiShoes.Model.Status;
 import TiShoes.Model.Voucher;
 import TiShoes.Service.User.ConnectService;
+import TiShoes.Service.User.OrderService;
 
 public class sOrderService {
 
@@ -107,4 +108,33 @@ public class sOrderService {
 		return li;
 	}
 
+	
+	public boolean cancel(int order_id) {
+		try {
+			connectService = new ConnectService();
+			Connection conn = connectService.getConnect();
+			String query = "update `order_` set `status_id` = 6, `request` = 0 where id = ?";
+			PreparedStatement preparedStmt = (PreparedStatement) conn.prepareStatement(query);
+			preparedStmt.setInt(1, order_id);
+			preparedStmt.executeUpdate();
+			conn.close();
+			return true;
+		} catch (Exception e) {
+			System.err.println("Got an exception 123 s order service! ");
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+	
+	public Order_ get_order_by_id(int id) {
+		OrderService orderService = new OrderService();
+		List<Order_> li = orderService.getAllOrder();
+		Order_ rs =null;
+		for (Order_ o : li) {
+			if(o.getId() == id) {
+				rs = o;
+			}
+		}
+		return rs;
+	}
 }

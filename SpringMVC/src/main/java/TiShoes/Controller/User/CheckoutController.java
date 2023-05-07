@@ -103,10 +103,10 @@ public class CheckoutController {
 		} else {
 			price_at += p.getPrice();
 		}
-		System.out.println(id_prod+"=="+ vchid +"=="+ size+"=="+ color +"=="+ city +"=="+ town
-				+"=="+ village  +"=="+ fullname  +"=="+ phone_number  +"=="+ email);
-		if (id_prod != null && size != null && color != null && city != null && town != null
-				&& village != null && fullname != null && phone_number != null && email != null) {
+		System.out.println(id_prod + "==" + vchid + "==" + size + "==" + color + "==" + city + "==" + town + "=="
+				+ village + "==" + fullname + "==" + phone_number + "==" + email);
+		if (id_prod != null && size != null && color != null && city != null && town != null && village != null
+				&& fullname != null && phone_number != null && email != null) {
 			double dis = checkoutService.get_discount_at(Integer.parseInt(quantity),
 					voucherService.get_voucher_code_by_id(vc_id), Integer.parseInt(id_prod));
 			double pricetotal = checkoutService.get_price_at(Integer.parseInt(quantity),
@@ -132,8 +132,9 @@ public class CheckoutController {
 					System.out.println("buy now success (118 checkoutController)");
 					voucher_saveService.update(Integer.parseInt(user), vc_id);
 					session.setAttribute("buynowstatus", "end");
-					if(!method.equals("COD")) {
-						statisticsService.update_revenue_product_num_in_statistics_DB(1, (double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100) / 100);
+					if (!method.equals("COD")) {
+						statisticsService.update_revenue_product_num_in_statistics_DB(1,
+								(double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100) / 100);
 					}
 					return new ModelAndView("redirect: /SpringMVC/sucess-buynow?id_prod=" + id_prod + "&id_color="
 							+ color + "&id_size=" + size + "&quantity=" + quantity + "&fullname=" + fullname
@@ -155,8 +156,9 @@ public class CheckoutController {
 						&& statisticsService.update_order_num_in_statistics_DB()) {
 					System.out.println("buy now success (96 checkoutController)");
 					session.setAttribute("buynowstatus", "end");
-					if(!method.equals("COD")) {
-						statisticsService.update_revenue_product_num_in_statistics_DB(1, (double) Math.round(price_at *Integer.parseInt(quantity) * 100) / 100);
+					if (!method.equals("COD")) {
+						statisticsService.update_revenue_product_num_in_statistics_DB(1,
+								(double) Math.round(price_at * Integer.parseInt(quantity) * 100) / 100);
 					}
 					return new ModelAndView("redirect: /SpringMVC/sucess-buynow?id_prod=" + id_prod + "&id_color="
 							+ color + "&id_size=" + size + "&quantity=" + quantity + "&fullname=" + fullname
@@ -396,15 +398,17 @@ public class CheckoutController {
 			for (Cart cart : li) {
 				user_id = cart.getUser().getId();
 				// calculator total product price
-				
+
 				if (cart.getColor_size().getProd().getDiscount() > 0) {
-					total += ((double) Math.round((cart.getColor_size().getProd().getPrice() - cart.getColor_size().getProd().getPrice()
-							* cart.getColor_size().getProd().getDiscount() / 100)*100)/100) * cart.getQuantity();
-					
-					System.out.println((cart.getColor_size().getProd().getPrice() - cart.getColor_size().getProd().getPrice()
-							* cart.getColor_size().getProd().getDiscount() / 100) * cart.getQuantity() + "aaa");
-					
-					
+					total += ((double) Math.round(
+							(cart.getColor_size().getProd().getPrice() - cart.getColor_size().getProd().getPrice()
+									* cart.getColor_size().getProd().getDiscount() / 100) * 100)
+							/ 100) * cart.getQuantity();
+
+					System.out.println(
+							(cart.getColor_size().getProd().getPrice() - cart.getColor_size().getProd().getPrice()
+									* cart.getColor_size().getProd().getDiscount() / 100) * cart.getQuantity() + "aaa");
+
 				} else {
 					total += cart.getColor_size().getProd().getPrice() * cart.getQuantity();
 					System.out.println(total + "a=-------------------------");

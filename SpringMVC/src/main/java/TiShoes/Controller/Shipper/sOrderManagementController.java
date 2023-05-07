@@ -67,7 +67,6 @@ public class sOrderManagementController {
 			public int compare(Order_ o1, Order_ o2) {
 				return o2.getId() - o1.getId();
 			}
-
 		});
 		mv.addObject("listOrder", li);
 
@@ -82,7 +81,9 @@ public class sOrderManagementController {
 		_aOrder_detailsSevice = new aOrder_detailsSevice();
 		_aStatusService = new aStatusService();
 		sOrderService = new sOrderService();
+		
 		order_detailsService = new Order_detailsService();
+		
 		String id_order = String.valueOf(request.getParameter("id_order"));
 		if (!id_order.equals("null")) {
 			Order_ o = _aReceiptService.getOrderByID(Integer.parseInt(id_order));

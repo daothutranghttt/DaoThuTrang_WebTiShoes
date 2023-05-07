@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import TiShoes.Model.Order_;
 import TiShoes.Model.Statistics;
+import TiShoes.Model.User;
 import TiShoes.Service.Admin.aOrderService;
 import TiShoes.Service.Admin.aOrder_detailsSevice;
 import TiShoes.Service.Shipper.sDeliveryService;
@@ -48,6 +49,7 @@ public class ConfirmDeliveryController {
 		if (sDeliveryService.check_Order_(Integer.parseInt(id))) {
 			if (sDeliveryService.delivered(Integer.parseInt(id))) {
 				System.out.println("delivered: " + id);
+				Order_ o = sOrderService.get_order_by_id(Integer.parseInt(id));
 				if (o != null) {
 					if (!o.getMethod().equals("COD")) {
 						mv.addObject("delivered", "true");

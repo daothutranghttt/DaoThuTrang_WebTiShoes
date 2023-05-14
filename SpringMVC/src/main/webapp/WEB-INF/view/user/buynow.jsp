@@ -347,12 +347,12 @@
 				<h4 class="pm">Payment methods</h4>
 
 				<div class="shipping" id="radio2" onclick="radio(this)">
-					<c:if test="${ method == 'cod' ||  method == null }">
-						<input type="radio" name="paymentmethods" id="rad2" value="cod"
+					<c:if test="${ method == 'COD' ||  method == null }">
+						<input type="radio" name="paymentmethods" id="rad2" value="COD"
 							checked>
 					</c:if>
-					<c:if test="${ method != 'cod' &&  method != null }">
-						<input type="radio" name="paymentmethods" id="rad2" value="cod">
+					<c:if test="${ method != 'COD' &&  method != null }">
+						<input type="radio" name="paymentmethods" id="rad2" value="COD">
 					</c:if>
 					<div class="icon-cod">
 						&emsp;Payment on delivery (COD) <img
@@ -361,13 +361,13 @@
 					</div>
 				</div>
 
-				<c:if test="${ method == 'cod' ||  method == null }">
+				<c:if test="${ method == 'COD' ||  method == null }">
 					<div class="content-pm" id="content-pm"
 						style="visibility: visible;">You only have to pay when you
 						receive the goods.</div>
 				</c:if>
 
-				<c:if test="${ method != 'cod' &&  method != null }">
+				<c:if test="${ method != 'COD' &&  method != null }">
 					<div class="content-pm none" id="content-pm"
 						style="visibility: visible;">You only have to pay when you
 						receive the goods.</div>
@@ -1185,7 +1185,7 @@
 			document.getElementById("rad2").checked = true;
 			$("#content-pm").removeClass("none");
 			$("#content-bank").addClass("none");
-			method = "cod";
+			method = "COD";
 		} else if(x.id == "radio3") {
 			document.getElementById("rad3").checked = true;
 			$("#content-pm").addClass("none");

@@ -208,7 +208,7 @@
 				</div>
 				<div class="btn-buy-continue">
 					<div class="btn-continue">
-						<input type="submit" name="continueShopping"
+						<input type="button" name="continueShopping"
 							id="continue-shopping" value="Continue Shopping">
 					</div>
 					<div class="btn-buy-cart">

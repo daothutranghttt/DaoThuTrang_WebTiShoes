@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import TiShoes.Service.Admin.aRoleService;
+import TiShoes.Service.Admin.aStatisticsService;
 import TiShoes.Service.Admin.aUserService;
 
 @Controller
@@ -25,6 +26,7 @@ public class UserController {
 
 	private aRoleService aRoleService;
 	private aUserService aUserService;
+	private aStatisticsService statisticsService;
 
 	@RequestMapping(value = { "/admin/customer" })
 	public ModelAndView loadCustomer(HttpServletRequest request, HttpServletResponse response) {
@@ -67,7 +69,7 @@ public class UserController {
 		ModelAndView mv = new ModelAndView("admin/customer");
 		
 		aUserService = new aUserService();
-		
+		statisticsService = new aStatisticsService();
 		String fullname = request.getParameter("fullname");
 		String email = request.getParameter("email");
 		String phone_number = request.getParameter("phonenumber");
@@ -102,6 +104,20 @@ public class UserController {
 				if (aUserService.insert(fullname, email, phone_number, address, password, image,
 						Integer.parseInt(role_id))) {
 					System.out.println("Add uesr success");
+					if (statisticsService.check_date_of_today_exist()) { // exists
+						if (statisticsService.update_user_num_in_statistics_DB()) {
+							System.out.println("Update user num in statistics DB success!");
+						} else {
+							System.out.println("Update user num in statistics DB unsuccess!");
+						}
+					} else { // not exists
+						statisticsService.insert_new_statistics();
+						if (statisticsService.update_user_num_in_statistics_DB()) {
+							System.out.println("Update user num in statistics DB success!");
+						} else {
+							System.out.println("Update user num in statistics DB unsuccess!");
+						}
+					}
 				} else {
 					System.out.println("Add uesr unsuccess");
 				}

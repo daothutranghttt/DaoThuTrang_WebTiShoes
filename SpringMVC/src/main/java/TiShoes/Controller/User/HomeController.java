@@ -22,7 +22,7 @@ import TiShoes.Service.User.UserService;
 
 @Controller
 public class HomeController {
-	
+
 	private SlidesService slidesService;
 	private ProductService productService;
 	private NewsService newsService;
@@ -30,11 +30,11 @@ public class HomeController {
 	private LoginService loginService;
 	private UserService userService;
 	private aStatisticsService aStatisticsService;
-	
-	@RequestMapping(value = {"/", "/home"})
-	public ModelAndView loadHome(HttpServletRequest request, HttpServletResponse response){
+
+	@RequestMapping(value = { "/", "/home" })
+	public ModelAndView loadHome(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView("user/index");
-		
+
 		slidesService = new SlidesService();
 		productService = new ProductService();
 		newsService = new NewsService();
@@ -42,19 +42,19 @@ public class HomeController {
 		loginService = new LoginService();
 		userService = new UserService();
 		aStatisticsService = new aStatisticsService();
-		
+
 		List<String> li = null;
 		String username = String.valueOf(request.getParameter("username")).trim();
 		String password = String.valueOf(request.getParameter("password")).trim();
 		String rememberme = request.getParameter("rememberme");
-		
+
 		String logout = String.valueOf(request.getParameter("logout"));
-		if(!aStatisticsService.check_date_of_today_exist()) { // not exists
+		if (!aStatisticsService.check_date_of_today_exist()) { // not exists
 			aStatisticsService.insert_new_statistics();
 		}
-		
+
 		Cookie arr[] = request.getCookies();
-		//add name available in cookie to check name in cookie then add to cart
+		// add name available in cookie to check name in cookie then add to cart
 		if (arr != null) {
 			li = new ArrayList<>();
 			for (Cookie o : arr) {
@@ -63,21 +63,21 @@ public class HomeController {
 		}
 		// login
 		String msg = "";
-		
-		if(!username.equals("null") && !password.equals("null")) {
+
+		if (!username.equals("null") && !password.equals("null")) {
 			String get_user_id = String.valueOf(loginService.getIdUser(username, password));
-			if(loginService.checkUserPass(username, password)) {
-				if(loginService.checkStatucBlock(username, password)) {
+			if (loginService.checkUserPass(username, password)) {
+				if (loginService.checkStatucBlock(username, password)) {
 					msg = "block";
 					mv.addObject("message", msg);
 				} else {
 					msg = "true";
 					mv.addObject("message", msg);
 					mv.addObject("userID", get_user_id);
-					
-					if(rememberme != null) {
+
+					if (rememberme != null) {
 						Cookie oUserId = new Cookie("userID", get_user_id);
-						oUserId.setMaxAge(60*60*24*15);
+						oUserId.setMaxAge(60 * 60 * 24 * 15);
 						response.addCookie(oUserId);
 						Cookie msgLogin = new Cookie("msgLogin", "true");
 						msgLogin.setMaxAge(30);
@@ -85,9 +85,9 @@ public class HomeController {
 						System.out.println("login true - remember");
 					} else {
 						Cookie oUserId = new Cookie("userID", get_user_id);
-						oUserId.setMaxAge(60*60*24);
+						oUserId.setMaxAge(60 * 60 * 24);
 						response.addCookie(oUserId);
-						System.out.println("login true - not remember: "+username+ " - " + password);
+						System.out.println("login true - not remember: " + username + " - " + password);
 						Cookie msgLogin = new Cookie("msgLogin", "true");
 						msgLogin.setMaxAge(30);
 						response.addCookie(msgLogin);
@@ -95,27 +95,27 @@ public class HomeController {
 					mv.addObject("avatar", userService.getAvatarByUserID(loginService.getIdUser(username, password)));
 				}
 			} else {
-				msg = "false";	
+				msg = "false";
 				mv.addObject("message", msg);
 				System.out.println("login false");
 			}
 		}
-		
+
 		if (arr != null) {
 			for (Cookie o : arr) {
-				if(o.getName().equals("userID")) {
+				if (o.getName().equals("userID")) {
 					mv.addObject("userID", o.getValue().trim());
-					if(!userService.getAvatarByUserID(Integer.parseInt(o.getValue().trim())).equals("")) {
+					if (!userService.getAvatarByUserID(Integer.parseInt(o.getValue().trim())).equals("")) {
 						mv.addObject("avatar", userService.getAvatarByUserID(Integer.parseInt(o.getValue().trim())));
 					}
 				}
 			}
 		}
-		
-		if(logout.equals("true")) {
-			if(arr!= null) {
+
+		if (logout.equals("true")) {
+			if (arr != null) {
 				for (Cookie o : arr) {
-					if(o.getName().equals("userID")) {
+					if (o.getName().equals("userID")) {
 						o.setValue("");
 						o.setMaxAge(0);
 						response.addCookie(o);
@@ -125,12 +125,12 @@ public class HomeController {
 			mv.addObject("logout", "true");
 		}
 		//
-		if(arr!= null) {
+		if (arr != null) {
 			for (Cookie o : arr) {
-				System.out.println(o.getName()+"=="+o.getValue());
+				System.out.println(o.getName() + "==" + o.getValue());
 			}
 		}
-		
+
 		mv.addObject("style", styleService.getAllStyle());
 		mv.addObject("slides", slidesService.getAllSlides());
 		mv.addObject("listNewArrivals", productService.getNewArrivals());
@@ -138,23 +138,20 @@ public class HomeController {
 		mv.addObject("listNewsHomeRight", newsService.getNewsHome());
 		mv.addObject("listNewsHomeLeft", newsService.listNewsHomeLeft);
 		mv.addObject("listMostLovedProducts", productService.getMostLovedProducts());
-		
-		
+
 		return mv;
 	}
-	
-	@RequestMapping(value = {"news"})
-	public ModelAndView loadNews(){
+
+	@RequestMapping(value = { "news" })
+	public ModelAndView loadNews() {
 		ModelAndView mv = new ModelAndView("user/news");
 		styleService = new StyleService();
-		
 
 		mv.addObject("style", styleService.getAllStyle());
 		return mv;
 	}
-	
-	
-	//reset cookie
+
+	// reset cookie
 //	
 //	for (Cookie o : arr) {
 //		if (o.getName().equals("prod_size")) {
@@ -172,5 +169,5 @@ public class HomeController {
 //			response.addCookie(addtocartprod);
 //		}
 //	}	
-	
+
 }

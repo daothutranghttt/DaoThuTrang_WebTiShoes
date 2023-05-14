@@ -148,11 +148,16 @@ public class CheckoutCartController {
 				System.out.println(vc_id + "_" + method);
 
 				if (!method.equals("COD")) {
-					if(dis != 0.0) {
-						statisticsService.update_revenue_product_num_in_statistics_DB(0, -dis);
+					if (dis != 0.0) {
+						if (total < 50) {
+							statisticsService.update_revenue_product_num_in_statistics_DB(0, -dis + 11.00);
+						} else {
+							statisticsService.update_revenue_product_num_in_statistics_DB(0, -dis);
+						}
+
 					}
 				}
-				
+
 				return new ModelAndView("redirect: /SpringMVC/thank/" + order_id);
 			} else {
 				System.out.println("buy cart unsuccess this");

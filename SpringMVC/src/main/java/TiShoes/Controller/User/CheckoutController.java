@@ -93,8 +93,14 @@ public class CheckoutController {
 		if (method == null) {
 			method = "COD";
 		} else {
-			User u = userService.get_user_by_id(Integer.parseInt(user));
-			phone_number = u.getPhone_number();
+			if (method.equalsIgnoreCase("COD")) {
+				System.out.println("heare 111");
+			} else {
+				if (!user.equals("")) {
+					User u = userService.get_user_by_id(Integer.parseInt(user));
+					phone_number = u.getPhone_number();
+				}
+			}
 		}
 		double price_at = 0;
 		Product p = productService.getProduct(Integer.parseInt(id_prod));
@@ -133,8 +139,12 @@ public class CheckoutController {
 					voucher_saveService.update(Integer.parseInt(user), vc_id);
 					session.setAttribute("buynowstatus", "end");
 					if (!method.equals("COD")) {
-						statisticsService.update_revenue_product_num_in_statistics_DB(1,
-								(double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100) / 100);
+						double statistics = (double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100)
+								/ 100;
+						if (price_at < 50) {
+							statistics = statistics + 11.0;
+						}
+						statisticsService.update_revenue_product_num_in_statistics_DB(1, statistics);
 					}
 					return new ModelAndView("redirect: /SpringMVC/sucess-buynow?id_prod=" + id_prod + "&id_color="
 							+ color + "&id_size=" + size + "&quantity=" + quantity + "&fullname=" + fullname
@@ -157,8 +167,12 @@ public class CheckoutController {
 					System.out.println("buy now success (96 checkoutController)");
 					session.setAttribute("buynowstatus", "end");
 					if (!method.equals("COD")) {
-						statisticsService.update_revenue_product_num_in_statistics_DB(1,
-								(double) Math.round(price_at * Integer.parseInt(quantity) * 100) / 100);
+						double statistics = (double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100)
+								/ 100;
+						if (price_at < 50) {
+							statistics = statistics + 11.0;
+						}
+						statisticsService.update_revenue_product_num_in_statistics_DB(1, statistics);
 					}
 					return new ModelAndView("redirect: /SpringMVC/sucess-buynow?id_prod=" + id_prod + "&id_color="
 							+ color + "&id_size=" + size + "&quantity=" + quantity + "&fullname=" + fullname
@@ -177,6 +191,7 @@ public class CheckoutController {
 	@RequestMapping(value = { "cart/checkout/{id}" }) // buy now login and not login
 	public ModelAndView checkout_buy_now(@PathVariable String id, HttpServletRequest request,
 			HttpServletResponse response) {
+		
 		ModelAndView mv = new ModelAndView("user/buynow");
 		color_sizeService = new Color_sizeService();
 		productService = new ProductService();
@@ -204,7 +219,7 @@ public class CheckoutController {
 		if (a.length > 1) {
 			id_prod = a[1];
 			id_user = a[0];
-
+			
 			Product p = productService.getProduct(Integer.parseInt(id_prod));
 			double total = 0;
 			if (quantity != null) {
@@ -222,6 +237,7 @@ public class CheckoutController {
 				}
 			}
 			mv.addObject("limit", total);
+			System.out.println("toatla: " +total);
 			mv.addObject("total", total);
 		} else if (a.length == 1) {
 			id_prod = a[0];

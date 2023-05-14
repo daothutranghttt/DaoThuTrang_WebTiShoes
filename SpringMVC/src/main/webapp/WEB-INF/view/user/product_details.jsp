@@ -270,11 +270,9 @@ cursor: pointer;
 										alt="image">
 								</div>
 								<div class="date-rating">2022-10-22 12:00 |</div>
-								<div class="content-rating">Trước có mượn son hãng này của
-									em gái xài thử nên ko nhớ rõ mùi nhưng 2 cây này có mùi hoa
-									hồng nhẹ, hơi hăng ko đáng kể. 2 màu lên tay ưng, 940 đúng tone
-									màu mình thích, 909 đi tiệc đẹp. Test lên tay thấy ok, lên môi
-									có khô hay ko thì chưa biết.</div>
+								<div class="content-rating">Giày TiShoes luôn mang đến một trải nghiệm tốt với người 
+								dùng. Chất lượng cao, giá cả hợp lý cùng với nhiều khuyến mại ưu đãi. Sẽ quay lại và 
+								ủng hộ shop trong thời gian dài. </div>
 								<div class="img-video-rating">
 									<img src="<c:url value="/assets/images/products/0.png"/>"
 										alt="img-reviews"> <img
@@ -285,9 +283,8 @@ cursor: pointer;
 								</div>
 								<div class="feedback-rating">
 									<h6>Phản Hồi Của Người Bán</h6>
-									<p>Cảm ơn bạn đã tin dùng và ủng hộ Perfect Diary, Perfect
-										Diary sẽ cố gắng hơn nữa để mang lại trải nghiệm tốt nhất cho
-										khách hàng. Bạn đừng quên follow Perfect Diary trên shopee để
+									<p>Cảm ơn bạn đã tin dùng và ủng hộ TiShoes, TiShoes sẽ cố gắng hơn nữa để mang lại trải nghiệm tốt nhất cho
+										khách hàng. Bạn đừng quên follow TiShoes trên shopee để
 										cập nhật nhiều chương trình khuyến mãi! Nếu có vấn đề nào cần
 										hỗ trợ đừng ngại ngùng chat với gian hàng bạn nhé.</p>
 								</div>
@@ -338,11 +335,9 @@ cursor: pointer;
 										alt="image">
 								</div>
 								<div class="date-rating">2022-10-22 12:00 |</div>
-								<div class="content-rating">Trước có mượn son hãng này của
-									em gái xài thử nên ko nhớ rõ mùi nhưng 2 cây này có mùi hoa
-									hồng nhẹ, hơi hăng ko đáng kể. 2 màu lên tay ưng, 940 đúng tone
-									màu mình thích, 909 đi tiệc đẹp. Test lên tay thấy ok, lên môi
-									có khô hay ko thì chưa biết.</div>
+								<div class="content-rating">Giày TiShoes luôn mang đến một trải nghiệm tốt với người 
+								dùng. Chất lượng cao, giá cả hợp lý cùng với nhiều khuyến mại ưu đãi. Sẽ quay lại và 
+								ủng hộ shop trong thời gian dài.</div>
 								<div class="img-video-rating">
 									<img src="<c:url value="/assets/images/products/0.png"/>"
 										alt="img-reviews"> <img
@@ -353,9 +348,8 @@ cursor: pointer;
 								</div>
 								<div class="feedback-rating">
 									<h6>Phản Hồi Của Người Bán</h6>
-									<p>Cảm ơn bạn đã tin dùng và ủng hộ Perfect Diary, Perfect
-										Diary sẽ cố gắng hơn nữa để mang lại trải nghiệm tốt nhất cho
-										khách hàng. Bạn đừng quên follow Perfect Diary trên shopee để
+									<p>Cảm ơn bạn đã tin dùng và ủng hộ TiShoes, TiShoes sẽ cố gắng hơn nữa để mang lại trải nghiệm tốt nhất cho
+										khách hàng. Bạn đừng quên follow TiShoes trên shopee để
 										cập nhật nhiều chương trình khuyến mãi! Nếu có vấn đề nào cần
 										hỗ trợ đừng ngại ngùng chat với gian hàng bạn nhé.</p>
 								</div>
@@ -467,9 +461,10 @@ cursor: pointer;
 		      	xhr.open("GET", "/SpringMVC/cart/checkout/save/"+user_prod);
 		      	xhr.onload = function () {
 		      		var val = document.getElementById("size").value;
+		      		var col = document.getElementById("color").value;
 		      		var quantity = document.getElementById("input_amount").value;
 		      		if(val != null || quantity != null) {
-		      			window.location.assign("/SpringMVC/cart/checkout/"+user_prod + "?size="+val + "&quantity="+quantity);
+		      			window.location.assign("/SpringMVC/cart/checkout/"+user_prod + "?size="+val + "&quantity="+quantity+"&color="+col);
 		      		} else {
 		      			window.location.assign("/SpringMVC/cart/checkout/"+user_prod);
 		      		}
@@ -579,6 +574,8 @@ cursor: pointer;
 				for (let i=0; i<color.length; i++) {
 					if (color[i].id == this.id) {
 						$(this).addClass("selected-color");
+						var col = color[i].id;
+						document.getElementById("color").value = col.split("_")[1];
 					} else {
 						$(color[i]).removeClass("selected-color");
 						for (let j=0; j<sizes.length; j++) {

@@ -259,7 +259,7 @@ input#phone {
 
 				<h4 class="pm">Payment methods</h4>
 				<div class="shipping" id="radio2" onclick="radio(this)">
-					<input type="radio" name="paymentmethods" id="rad2" value="cod"
+					<input type="radio" name="paymentmethods" id="rad2" value="COD"
 						checked>
 					<div class="icon-cod">
 						&emsp;Payment on delivery (COD) <img

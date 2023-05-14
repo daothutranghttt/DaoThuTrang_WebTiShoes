@@ -48,8 +48,7 @@ public class NewsService implements NewsRepository {
 
 	@Override
 	public List<News> getNewsHome() {
-		NewsService n = new NewsService();
-		List<News> li = n.getAllNews();
+		List<News> li = getAllNews();
 		List<News> listNewsHome = new ArrayList<>();
 		Collections.sort(li, new Comparator<News>() {
 			@Override

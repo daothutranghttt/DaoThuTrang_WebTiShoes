@@ -290,8 +290,7 @@
 								<div class="price-product-products">
 									<c:if test="${ it.discount > 0}">
 										<div class="price-sale-products">
-											$
-											<fmt:formatNumber
+											$<fmt:formatNumber
 												value="${it.price - it.price*it.discount/100 }"
 												type="number" maxFractionDigits="2" />
 										</div>
@@ -417,7 +416,7 @@
 													<c:if test="${ item.discount > 0}">
 														<p class="price-sale-effect">
 															<b>$<fmt:formatNumber
-																	value="${item.price + item.price*item.discount/100 }"
+																	value="${item.price - item.price*item.discount/100 }"
 																	type="number" maxFractionDigits="2" /></b>
 														</p>
 														<p class="price-old-effect"
@@ -535,9 +534,8 @@
 								<div class="price-product-products">
 									<c:if test="${ it.discount > 0}">
 										<div class="price-sale-products">
-											$
-											<fmt:formatNumber
-												value="${it.price+ it.price*it.discount/100 }" type="number"
+											$<fmt:formatNumber
+												value="${it.price - it.price*it.discount/100 }" type="number"
 												maxFractionDigits="2" />
 										</div>
 										<div class="price-old-products">$${ it.price }</div>

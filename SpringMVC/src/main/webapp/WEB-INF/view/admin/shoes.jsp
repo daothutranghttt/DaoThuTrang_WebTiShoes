@@ -113,6 +113,7 @@ td.td-date {
     display: flex;
 }
 .btn-add {
+justify-content: center;
     display: flex;
 }
 .btn-add a{

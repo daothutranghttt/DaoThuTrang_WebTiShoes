@@ -141,7 +141,7 @@ public class CheckoutController {
 					if (!method.equals("COD")) {
 						double statistics = (double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100)
 								/ 100;
-						if (price_at < 50) {
+						if ((price_at * Integer.parseInt(quantity)) < 50) {
 							statistics = statistics + 11.0;
 						}
 						statisticsService.update_revenue_product_num_in_statistics_DB(1, statistics);
@@ -169,7 +169,7 @@ public class CheckoutController {
 					if (!method.equals("COD")) {
 						double statistics = (double) Math.round((price_at * Integer.parseInt(quantity) - dis) * 100)
 								/ 100;
-						if (price_at < 50) {
+						if ((price_at * Integer.parseInt(quantity)) < 50) {
 							statistics = statistics + 11.0;
 						}
 						statisticsService.update_revenue_product_num_in_statistics_DB(1, statistics);
